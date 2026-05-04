@@ -4,26 +4,32 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 // ── CORS — must be first, before all routes ─────────────────
-// credentials: true is required for cookies to work cross-origin
+// Production-ready CORS configuration with credentials support
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
-  'https://hostel-ease-a-hostel-management-system-eqknvvnmm.vercel.app',
+  'https://hostel-ease-a-hostel-management-system-gs630nuwt.vercel.app',
   process.env.CLIENT_URL
 ].filter(Boolean);
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
+    // Allow requests with no origin (mobile apps, Postman, curl)
     if (!origin) return callback(null, true);
     
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.CLIENT_URL === '*') {
+    // Check if origin is in allowed list
+    if (allowedOrigins.includes(origin) || process.env.CLIENT_URL === '*') {
       callback(null, true);
     } else {
+      console.log('❌ CORS blocked origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  exposedHeaders: ['Set-Cookie'],
+  maxAge: 86400, // 24 hours
 }));
 
 // ── Middleware ──────────────────────────────────────────────
