@@ -32,7 +32,32 @@ app.use('/api/reports',  reportRoutes);
 
 // ── Health Check ────────────────────────────────────────────
 app.get('/', (req, res) => {
-  res.json({ success: true, message: 'HostelEase API is running' });
+  res.json({ 
+    success: true, 
+    message: 'HostelEase API is running',
+    environment: process.env.NODE_ENV || 'development',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// ── Environment Check (for debugging) ───────────────────────
+app.get('/api/health', (req, res) => {
+  const envCheck = {
+    mongoUri: !!process.env.MONGO_URI,
+    jwtSecret: !!process.env.JWT_SECRET,
+    emailUser: !!process.env.EMAIL_USER,
+    emailPass: !!process.env.EMAIL_PASS,
+    clientUrl: process.env.CLIENT_URL || 'not set',
+    nodeEnv: process.env.NODE_ENV || 'development',
+    port: process.env.PORT || 3000
+  };
+  
+  res.json({
+    success: true,
+    message: 'Environment variables check',
+    env: envCheck,
+    dbStatus: require('mongoose').connection.readyState === 1 ? 'connected' : 'disconnected'
+  });
 });
 
 // ── 404 Handler ─────────────────────────────────────────────
