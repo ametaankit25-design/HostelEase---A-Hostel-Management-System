@@ -1,4 +1,11 @@
 {
+  "name": "hostelease",
+  "version": "1.0.0",
+  "description": "A Hostel Management System",
+  "scripts": {
+    "start": "cd Backend && npm install && node server.js",
+    "dev": "cd Backend && npm run dev"
+  },
   "dependencies": {
     "cookie-parser": "^1.4.7"
   }
