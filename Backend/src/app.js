@@ -8,7 +8,6 @@ const cors = require('cors');
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
-  'https://hostel-ease-a-hostel-management-system-f3exm4g5b.vercel.app',
   process.env.CLIENT_URL
 ].filter(Boolean);
 
@@ -17,8 +16,11 @@ app.use(cors({
     // Allow requests with no origin (mobile apps, Postman, curl)
     if (!origin) return callback(null, true);
     
-    // Check if origin is in allowed list
-    if (allowedOrigins.includes(origin) || process.env.CLIENT_URL === '*') {
+    // Allow any Vercel deployment of this app
+    const isVercelApp = origin.match(/^https:\/\/hostel-ease-a-hostel-management-system-[a-z0-9]+\.vercel\.app$/);
+    
+    // Check if origin is in allowed list or is a Vercel deployment or wildcard is set
+    if (allowedOrigins.includes(origin) || isVercelApp || process.env.CLIENT_URL === '*') {
       callback(null, true);
     } else {
       console.log('❌ CORS blocked origin:', origin);
