@@ -8,7 +8,7 @@ const cors = require('cors');
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
-  'https://hostel-ease-a-hostel-management-system-gs630nuwt.vercel.app',
+  'https://hostel-ease-a-hostel-management-system-f3exm4g5b.vercel.app',
   process.env.CLIENT_URL
 ].filter(Boolean);
 
