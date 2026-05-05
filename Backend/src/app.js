@@ -19,8 +19,12 @@ app.use(cors({
     // Allow any Vercel deployment of this app
     const isVercelApp = origin.match(/^https:\/\/hostel-ease-a-hostel-management-system-[a-z0-9]+\.vercel\.app$/);
     
-    // Check if origin is in allowed list or is a Vercel deployment or wildcard is set
-    if (allowedOrigins.includes(origin) || isVercelApp || process.env.CLIENT_URL === '*') {
+    // Allow any Netlify deployment of this app (including deploy previews)
+    const isNetlifyApp = origin.match(/^https:\/\/[a-z0-9-]+--hostelease2\.netlify\.app$/) || 
+                         origin.match(/^https:\/\/hostelease2\.netlify\.app$/);
+    
+    // Check if origin is in allowed list or is a Vercel/Netlify deployment or wildcard is set
+    if (allowedOrigins.includes(origin) || isVercelApp || isNetlifyApp || process.env.CLIENT_URL === '*') {
       callback(null, true);
     } else {
       console.log('❌ CORS blocked origin:', origin);
