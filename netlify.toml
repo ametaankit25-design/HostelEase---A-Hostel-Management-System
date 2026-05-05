@@ -10,6 +10,10 @@
   # Base directory
   base = "Frontend"
 
+[build.environment]
+  # Tell Netlify that VITE_API_URL is not a secret (it's a public backend URL)
+  SECRETS_SCAN_OMIT_KEYS = "VITE_API_URL"
+
 # Redirect all routes to index.html for client-side routing
 [[redirects]]
   from = "/*"
